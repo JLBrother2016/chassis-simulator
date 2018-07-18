@@ -1,0 +1,52 @@
+编译工具建立
+1.1. Toolchains
+Compiler : GNU GCC 4.8.2 EABI
+Linker: GNU Binutils 2.24
+###用sudo apt-get install build-essential搞定
+Make: cmake 2.8.12.2
+###用sudo apt-get install cmake搞定
+
+1.2. Build tool – catkin (ubuntu 14.04 only)
+Catkin is a powerful tool for building ROS components. For detailed documentation, please visit http://docs.ros.org/api/catkin/html/.
+For Uos development, please download catkin_install.tar.gz and extract it; then use:
+Please ask the administrator to mount NFS tool directory "/mnt/nas/public"
+
+the way to mount:
+sudo mkdir /mnt/nas/public -p
+sudo apt-get install nfs-common 
+sudo mount -t nfs -o nolock 192.168.100.7:/mnt/md0/public /mnt/nas/public
+
+The way to make catkin make system work
+cd /mnt/nas/public/catkin_install/
+sudo apt-get install python-empy python-nose cmake libgtest-dev
+sudo dpkg -i catkin_20160229-1_amd64.deb
+sudo dpkg -i catkin-pkg_20160229-1_amd64.deb
+sudo tar xvzf catkin-dev_20160229-1.tar.gz -C /opt
+
+After that, please add below line to the end of your “~/.bashrc”:
+source /opt/catkin/devel/setup.bash
+
+1.3. Unit testing – gtest
+Gtest is google’s C/C++ unit testsuits. It has been integrated with catkin and worked under catkin by default.
+####下载源码解压后，用命令sudo make install直接安装
+
+1.4. Version control – git
+Please execute below commands to configure git:
+git config --global user.name 
+git config --global user.email 
+git config --global core.editor vi
+git config --global color.ui auto
+
+Firstly, please refer to 2.2 to checkout a project source with git.
+Then, modify a file, and use:
+git commit 
+To commit modified file to local git repository.
+
+在x86环境下交叉编译ARM (aarch64) uos binary:
+1） Ubuntu 16.04 (注意 ubuntu 14.04 不支持, 因为我们Nvidia-TX2 ARM64板子只支持16.04)
+2) 下载最新的uos_depend, 依赖库在lib-arm/    ####这句话不知道是怎么回事？
+3） sudo apt-get install cpp-aarch64-linux-gnu gcc-aarch64-linux-gnu g++-aarch64-linux-gnu 
+    ###32位的交叉编译环境，安装 sudo apt-get install gcc-arm-linux-gnueabihf sudo apt-get install g++-arm-linux-gnueabihf
+4） catkin_make -DARM=1 [VERBOSE=1] [install]   ##这句话是什么意思呢？
+
+
